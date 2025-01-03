@@ -2,6 +2,7 @@ from typing import Union, List, Tuple, Optional, Iterable
 
 import numpy as np
 from common.miscellaneous import verbose_print
+from math import floor, ceil
 
 BOUNDING_BOX_PRINT_INTEGER_TEMPLATE = "x_min={:3d} | y_min={:3d} | x_max={:3d} | y_max={:3d} | height={:3d} | width={:3d}"
 BOUNDING_BOX_PRINT_FLOAT_TEMPLATE = "x_min={:.2f} | y_min={:.2f} | x_max={:.2f} | y_max={:.2f} | height={:.2f} | width={:.2f}"
@@ -290,6 +291,44 @@ def clip_bbox_values(bbox: np.ndarray, image_shape: Tuple[int, int], min_values:
 
     return np.array([x_min, y_min, x_max, y_max])
 
+def bbox_keep_asp_ratio(bbox: Union[List, np.ndarray], image_shape: Tuple[int,int]=None,
+                        target_aspect_ration: float=3., verbose: int=0) -> Union[List, np.ndarray]:
+    x_min, y_min, x_max, y_max, bb_h, bb_w = parse_bbox(bbox)
+    new_height = bb_w * target_aspect_ration
+    diff_height = new_height - bb_h
+
+    y_min = ceil(y_min - diff_height/2)
+    y_max = floor(y_max + diff_height/2)
+    x_min = ceil(x_min)
+    x_max = floor(x_max)
+
+    new_box = np.array([x_min, y_min, x_max, y_max])
+
+    if image_shape is not None:
+        # if image size is smaller than the box size, shrink the box
+        im_h, im_w = image_shape[:2]
+        bb_h, bb_w = get_bbox_dimensions(new_box)
+
+        if max([bb_h - im_h, bb_w - im_w]) > 0:
+            if verbose > 0:
+                print("square box is bigger than the image")
+                print("bb_h, bb_w", bb_h, bb_w)
+                print("im_h, im_w", im_h, im_w)
+
+            new_box = shrink_bbox_to_fit_image(new_box, (im_h, im_w), verbose=verbose)
+            new_box = bbox_keep_asp_ratio(new_box, (im_h, im_w))
+
+            return new_box
+
+        if verbose > 1:
+            print("new_box before fix_off_coordinates", new_box)
+
+        new_box = fix_off_coordinates(new_box, image_shape, shift=True)
+
+        if verbose > 1:
+            print("new_box before fix off coor", new_box)
+
+    return new_box
 
 def bbox_to_square(bbox: Union[List, np.ndarray], image_shape: Tuple[int, int] = None, verbose: int = 0) -> Union[List, np.ndarray]:
     """
