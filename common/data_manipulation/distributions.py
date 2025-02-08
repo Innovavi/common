@@ -94,3 +94,15 @@ def get_limited_gaussian(loc: float, scale: float, min_value: float, max_value: 
         limited_gaussian = limited_gaussian[0]
 
     return limited_gaussian
+
+
+def norm_values_to_range(values, min_x, max_x, min_y=-1, max_y=1):
+    scale_change = abs((max_y - min_y) / (max_x - min_x))
+
+    x_mean = ((max_x + min_x) / 2) * scale_change
+    y_mean = (max_y + min_y) / 2
+    mean_change = y_mean - x_mean
+
+    norm_values = values * scale_change + mean_change
+
+    return norm_values
