@@ -5,7 +5,7 @@ setup(
     version='3.2.13',
     packages=['common', 'common.analysis', 'common.image_tools', 'common.ml_tools',
               'common.data_manipulation', 'common.data_manipulation.image_data_tools',
-              'common.visualizations', 'common.paths'],
+              'common.visualizations'],
     url='',
     license='',
     author='ignas',
