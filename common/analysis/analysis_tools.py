@@ -63,7 +63,7 @@ def calculate_CDF(x, thresholds: Optional[np.ndarray] = None, descending: bool =
 
     x_distribution = np.abs(x) if absolute else np.array(x)
 
-    CED = [
+    CDF = [
         (np.sum(x_distribution >= thresh) / total_size)
         if descending
         else (np.sum(x_distribution <= thresh) / total_size)
@@ -82,7 +82,7 @@ def calculate_CDF(x, thresholds: Optional[np.ndarray] = None, descending: bool =
     #
     #     CED.append(CE_percent)
 
-    return np.array(CED)
+    return np.array(CDF)
 
 
 def calculate_CDF_counted(x, thresholds: Optional[np.ndarray] = None, descending: bool = False, absolute: bool = False) -> np.ndarray:

@@ -22,7 +22,7 @@ def plot_histogram(data_to_show, bins=50, add_quatinles=None, add_analysis=True,
     if x_ticks is not None:
         ax.set_xticks(x_ticks)
         max_tick = max(x_ticks)
-        ax.set_xlim(min(x_ticks) - max_tick * 0.01, max(x_ticks) * 1.01)
+        ax.set_xlim(min(x_ticks) - max_tick * 0.01, max_tick * 1.01)
 
     counts, thresholds, _ = ax.hist(data_to_show, bins=bins, zorder=1, density=add_cumulative)
 
@@ -205,7 +205,9 @@ def plot_CDFs(CDFs, thresholds, names, marker=True, **kwargs):
     for i, error_percents in enumerate(CDFs):
         if len(thresholds) == len(error_percents):
             this_marker_index = MARKER_LIST[i % len(MARKER_LIST)] if marker else None
-            ax.plot(thresholds, error_percents, marker=this_marker_index)
+            linestyle_type = LINESTYLES_LIST[i % len(LINESTYLES_LIST)]
+            color = ALL_COLORS[i]
+            ax.plot(thresholds, error_percents, linestyle=linestyle_type, marker=this_marker_index, color=color)
 
     plt.legend(names)
 

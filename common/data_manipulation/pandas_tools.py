@@ -239,6 +239,7 @@ def separate_df_based_on_column_range(df: pd.DataFrame, column_name: Union[str, 
 
     return separated_df
 
+
 def parse_digibody_pandas_row(pandas_row: Union[pd.Series, pd.DataFrame]):
     metadata = pandas_row['metadata']
 
