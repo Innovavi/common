@@ -6,3 +6,4 @@
 /dist/
 /common.egg-info/
 *.pyc
+/common/data_manipulation/digiface_tools.py

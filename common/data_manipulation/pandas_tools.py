@@ -259,3 +259,24 @@ def parse_digibody_pandas_row(pandas_row: Union[pd.Series, pd.DataFrame]):
 
     full_landmarks = pandas_row['landmarks'].to_numpy().reshape(-1,2)#get_landmarks_from_pandas(pandas_row['landmarks'], to_lm=2502, filter_default=False)
     return image_id, image_name, camera_type, measures, parameters, bbox, full_landmarks
+
+
+def parse_digibody_pandas_row(pandas_row: Union[pd.Series, pd.DataFrame]):
+    metadata = pandas_row['metadata']
+
+    image_id = metadata.get('image_id', -1)
+    #face_id = metadata.get('face_id', -1)
+    #dataset = metadata.get('dataset', '')
+    #et_name = metadata.get('set', '')
+    image_name = metadata.get('image_name', '')
+    batch_id = metadata.get('image_batch', -1)
+    camera_type = metadata.get('camera_type', '')
+
+    #dome_rotation = pandas_row['dome_rotation'].values
+    measures = pandas_row['measures'].values
+    parameters = pandas_row['parameters'].values
+    bbox = get_bbox_from_pandas(pandas_row['bbox'])
+    #coefs = pandas_row['coefs'].values
+
+    full_landmarks = pandas_row['landmarks'].to_numpy().reshape(-1,2)#get_landmarks_from_pandas(pandas_row['landmarks'], to_lm=2502, filter_default=False)
+    return image_id, image_name, camera_type, measures, parameters, bbox, full_landmarks
