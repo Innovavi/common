@@ -253,7 +253,10 @@ def parse_digibody_pandas_row(pandas_row: Union[pd.Series, pd.DataFrame]):
     #dome_rotation = pandas_row['dome_rotation'].values
     measures = pandas_row['measures'].values
     parameters = pandas_row['parameters'].values
-    bbox = get_bbox_from_pandas(pandas_row['bbox'])
+    try:
+        bbox = get_bbox_from_pandas(pandas_row['bbox'])
+    except Exception:
+        bbox = []
     #coefs = pandas_row['coefs'].values
 
     full_landmarks = pandas_row['landmarks'].to_numpy().reshape(-1,2)#get_landmarks_from_pandas(pandas_row['landmarks'], to_lm=2502, filter_default=False)
