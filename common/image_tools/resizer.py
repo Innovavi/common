@@ -25,8 +25,8 @@ def resize_image(image: np.ndarray, desired_shape: Tuple[int, int] = (35, 35), r
     Resize given image while preserving its aspect ratio. Resizes in a way that dimensions are either the same size or smaller.
     :param image: Image to resize.
     :param desired_shape: New image shape.
-    :param resizing_type: The dimension to match with desired size. If ResizingType.BIGGER_DIMENSION, then resizes in a way that output dimensions are
-    either the same size or smaller. If resizing_type.SMALLER_DIMENSION, then resizes in a way that output dimensions are either the same size or bigger.
+    :param resizing_type: The dimension to match with desired size. If ResizingType.MAX, then resizes in a way that output dimensions are
+    either the same size or smaller. If resizing_type.MIN, then resizes in a way that output dimensions are either the same size or bigger.
     :param add_padding:
     :param padding_value:
     :param interpolation: Interpolation to use. If None, uses the best one.

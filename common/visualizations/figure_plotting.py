@@ -772,13 +772,14 @@ def plot_heatmaps(heatmaps, titles=None, columns=3, add_text=True, grid=False, *
     __show_save_logic(figure, **kwargs)
 
 
-def plot_nested_dict_bars(nested_dictionary, x_level_labels=None, y_ticks=None, display_legend=True, bar_value_on_top=True, **kwargs):
+def plot_nested_dict_bars(nested_dictionary, x_level_labels=None, y_ticks=None, x_ticks_rotation=None, display_legend=True, bar_value_on_top=True, **kwargs):
     """
     Plots bars for each category in the dictionary.
     Code found @ https://stackoverflow.com/questions/19184484/how-to-add-group-labels-for-bar-charts-in-matplotlib/19242176#19242176.
     :param nested_dictionary:
     :param x_level_labels:
     :param y_label:
+    :param vertical_y_ticks:
     :param fig_size:
     :param save_fullname:
     :param only_save:
@@ -792,6 +793,9 @@ def plot_nested_dict_bars(nested_dictionary, x_level_labels=None, y_ticks=None, 
 
     __nested_bar(ax, nested_dictionary, x_level_labels, bar_value_on_top)
     figure.subplots_adjust(bottom=0.3)
+
+    if x_ticks_rotation:
+        plt.setp(ax.get_xticklabels(), rotation=x_ticks_rotation)
 
     if display_legend:
         plt.legend()

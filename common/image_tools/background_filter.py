@@ -48,7 +48,7 @@ def fill_image_background_with_another_image(image: np.ndarray, background_image
     if len(np.unique(mask)) < 2:
         return image
 
-    bool_mask = mask.astype(np.bool)
+    bool_mask = mask.astype(bool)
     image_height, image_width = image.shape[:2]
 
     if image_height < background_image.shape[0] or image_width < background_image.shape[1]:
@@ -79,7 +79,7 @@ def fill_image_background_with_another_image(image: np.ndarray, background_image
 
         erroded_mask = erosion(mask, blur_kernel_shape)
         dilated_mask = dilation(mask, blur_kernel_shape)
-        contour_mask = (erroded_mask - dilated_mask).astype(np.bool)
+        contour_mask = (erroded_mask - dilated_mask).astype(bool)
 
         image_with_background = np.clip(contour_mask[:, :, np.newaxis] * blurred_image_with_background +
                                         ~contour_mask[:, :, np.newaxis] * image_with_background, 0, 255).astype(np.uint8)
