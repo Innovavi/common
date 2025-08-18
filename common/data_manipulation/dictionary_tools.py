@@ -26,6 +26,14 @@ def create_or_append_to_dict_of_lists(dict_of_lists: Dict[Any, Any], keys: Union
     return dict_of_lists
 
 
+def join_dicts_of_lists(dict_1, dict_2):
+    full_keys = set(list(dict_1.keys()) + list(dict_2.keys()))
+
+    full_dict = {key: dict_1.get(key, []) + dict_2.get(key, []) for key in full_keys}
+
+    return full_dict
+
+
 def nested_dict_add_element(dictionary: Dict[Any, Any], keys: List[Any], value: Any = 1) -> None:
     """
     Either adds the value to the dictionary or creates an instance in it with the value.
