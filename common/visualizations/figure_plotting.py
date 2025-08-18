@@ -192,7 +192,7 @@ def plot_multiple_CED_curves(multiple_CED, thresholds, names, marker=True, **kwa
     plot_CDFs(multiple_CED, thresholds, names, marker, **kwargs)
 
 
-def plot_CDFs(CDFs, thresholds, names, marker=True, **kwargs):
+def plot_CDFs(CDFs, thresholds, names=None, marker=True, **kwargs):
     figure, ax = plt.subplots(figsize=kwargs.get('fig_size', DEFAULT_PLOT_SIZE), clear=True)
     ax.grid(True, which='both')
 
@@ -209,7 +209,8 @@ def plot_CDFs(CDFs, thresholds, names, marker=True, **kwargs):
             color = ALL_COLORS[i]
             ax.plot(thresholds, error_percents, linestyle=linestyle_type, marker=this_marker_index, color=color)
 
-    plt.legend(names)
+    if names is not None:
+        plt.legend(names)
 
     __set_log_scale(ax, kwargs.get('log_scale', None))
     __set_axis_limits(ax, kwargs.get('axis_limits', [[], [-0.05, 1.05]]))

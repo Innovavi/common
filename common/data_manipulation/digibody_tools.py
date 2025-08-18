@@ -4,6 +4,38 @@ import pandas as pd
 
 from common.data_manipulation.pandas_tools import get_bbox_from_pandas, get_landmarks_from_pandas
 
+DIGIBODY_G9_COEF_COLUMNS = [
+    'SS_body_bs_2BellyLowerUpDown', 'SS_body_bs_2BellyLowerWidth', 'SS_body_bs_4BellyMoveInOut', 'SS_body_bs_4BellyMoveRotate', 'SS_body_bs_4BellyMoveUpDown',
+    'SS_body_bs_1BellyUpperWidth', 'SS_body_bs_PelvicDepth', 'SS_body_bs_WaistDepth', 'SS_body_bs_WaistFrontBack', 'SS_body_bs_AbdomenUpDown', 'SS_body_bs_WaistRotate',
+    'TM_body_bs_WaistWidth', 'SS_body_bs_0BellyFoldHorizontal', 'SS_body_bs_0BellySize', 'SS_body_bs_1BellyUpperBulge', 'SFDBMK_body_bs_BellyLoFlat', 'SS_body_bs_5BellyShapeFat1',
+    'SS_body_bs_5BellyShapeFat2', 'SFDBMK_body_bs_AbdomenSmall', 'body_bs_LoveHandles', 'body_bs_StomachDepthLower', 'SFDBMK_body_bs_BellySize', 'SFDBMK_body_bs_BellyLoSize',
+    'SS_body_bs_5BellyShapePregnant', 'SFDBMK_body_bs_UpperArmsLength', 'SFDBMK_body_bs_ArmsLowerLength', 'body_bs_TaperForearmA', 'body_bs_TaperForearmB', 'body_bs_MassShoulders',
+    'body_bs_TaperUpperArmA', 'body_bs_TaperUpperArmB', 'SFDBMK_body_bs_FingersLength', 'body_bs_FingersWidth', 'body_ctrl_ProportionHandSize', 'body_bs_ProportionShoulderWidth',
+    'TM_body_bs_ShoulderWidth', 'SFDBMK_body_bs_ShouldersHeight', 'SS_body_bs_WristThickness', 'TM_body_bs_ShoulderHeight', 'SFDBMK_body_bs_ShouldersWeak', 'P3DTL_body_bs_ArmsMuscular',
+    'SS_body_bs_ArmFlab', 'TM_body_bs_ArmpitHeight', 'SFDBMK_body_bs_ArmsElbowsShape', 'body_bs_SternumDepth', 'body_bs_SternumWidth', 'body_bs_SternumHeight',
+    'body_bs_PectoralsCleavage', 'body_bs_PectoralsDiameter', 'body_bs_PectoralsHeight', 'body_bs_PectoralsUnderCurve', 'body_bs_PectoralsHeightOuter', 'body_bs_PectoralsWidth',
+    'SFDBMK_body_bs_ChestMDeveloped', 'SFDBMK_body_bs_BreastCleavage', 'body_bs_BC_!BreastDiameter', 'P3DTL_body_bs_BreastsFlat', 'body_bs_BreastsLargeHigh',
+    'body_bs_BreastsFullnessLower', 'body_bs_BreastsFullnessUpper', 'body_bs_BreastsPerkSide', 'body_bs_BreastsDownwardSlope', 'body_bs_BC_!BreastHeightLower',
+    'body_bs_BC_!BreastHeightUpper', 'body_bs_BC_!BreastUnderWeight', 'body_bs_BC_!BreastUnderHeight', 'body_bs_BreastsSidesDepth', 'SFDBMK_body_bs_ChestSidesSmaller2',
+    'SFDBMK_body_bs_TorsoSidesSmall', 'body_bs_PectoralsSag', 'SFDBMK_body_bs_BreastBigger', 'body_bs_BreastsNatural', 'DF-BreastUtilities_BaseFeminine_chest_bs_BreastsShape02',
+    'TM_body_bs_ChestBreastDroop', 'TM_body_bs_ChestBreastImplant02', 'P3DTL_body_bs_BreastsSaggy', 'P3DTL_body_bs_BreastsXL', 'body_bs_BreastsHeavy', 'body_bs_BreastsShape06',
+    'SFDBMK_body_bs_BreastFShape1', 'body_bs_BC_!BreastSag1', 'body_bs_BC_!BreastPointed', 'SS_body_bs_GluteAngle', 'body_bs_GluteDepthLower', 'body_bs_GluteDepthUpper',
+    'SS_body_bs_GluteHeightInner', 'SS_body_bs_GluteHeightLower', 'SS_body_bs_GluteHeightUpper', 'TM_body_bs_GlutesDefined', 'SS_body_bs_GluteUpDown', 'SS_body_bs_HipDepth',
+    'SS_body_bs_HipUpDown', 'SS_body_bs_HipWidth1', 'body_bs_GluteSize', 'SS_body_bs_GluteWidthLower', 'SS_body_bs_GluteWidthUpper', 'SS_body_bs_PelvicRotate',
+    'SS_body_bs_PelvicHeight1', 'SS_body_bs_HipWidth3', 'body_bs_HipSize', 'SS_body_bs_HipDiameter', 'SS_body_bs_HipShape4', 'SS_body_bs_HipSize2', 'TM_body_bs_HipBoneStrength',
+    'SFDBMK_body_bs_Glutes1', 'SFDBMK_body_bs_GlutesSidesShape', 'body_bs_GluteCrease', 'SS_body_bs_AnatomyBulge1', 'TM_body_bs_NeckThickness', 'TM_body_bs_NeckWidth',
+    'head_ctrl_ProportionHeadSize_scl', '200_head_bs_CraniumWidth', 'head_bs_JawtoNeckSlack', 'SS_body_bs_AbdomenLength', 'head_bs_ProportionNeckLength', 'SS_body_bs_PelvicLength',
+    'SS_body_bs_ShinLength', 'SS_body_bs_ThighLength', 'body_bs_ProportionFootLength', 'body_ctrl_ProportionFootSize', 'SS_body_bs_KneeInner', 'SS_body_bs_KneeOuter',
+    'SFDBMK_body_bs_KneesShape', 'SFDBMK_body_bs_KneesHollowShape', 'body_bs_TaperShinA', 'body_bs_TaperShinB', 'SFDBMK_body_bs_ShinsShape', 'body_bs_TaperThighA',
+    'body_bs_TaperThighB', 'body_bs_ThighDepth', 'SFDBMK_body_bs_LegsUpperBackShape', 'SFDBMK_body_bs_LegsUpperFrontShape', 'SS_body_bs_ThighInner2',
+    'SFDBMK_body_bs_LegsThighOuterSmall', 'body_bs_CalvesSize', 'SS_body_bs_CalfFlexed', 'SS_body_bs_ThighThicknessWidth', 'body_bs_MassAnkles', 'TM_body_bs_AnkleSize',
+    'SS_body_bs_FeetWidth', 'SS_body_bs_HeelBallSize', 'SS_body_bs_HeelDepth', 'body_bs_ProportionToesLength', 'SS_body_bs_CalfType3', 'SS_body_bs_ShinMuscular',
+    'SS_body_bs_ThighApart', 'P3DTL_body_bs_ThighGap', 'SS_body_bs_ThighMuscular', 'SS_body_bs_ThighStraightShape', 'body_ctrl_BodyMuscular', 'body_ctrl_BodyFitness',
+    'HeavyBodyOnly', 'LitheBodyOnly', 'SS_body_bs_ShapeWidthAdjust', 'EmaciatedBodyOnly', 'MassBodyBodyOnly', 'SS_body_bs_AbdomenWidth', 'SS_body_bs_BackRotate',
+    'SS_body_bs_BackUpdown', 'SS_body_bs_BackDepth', 'body_bs_RibcageSize', 'SS_body_bs_RibCageDefine', 'SS_body_bs_TorsoDepth', 'SS_body_bs_TorsoWidth',
+    'TM_body_bs_RibsWidth', 'body_bs_LatsSize', 'SFDBMK_body_bs_ShoulderBlades', 'SS_body_bs_TorsoMuscular', 'body_bs_TrapsSize', 'SFDBMK_body_bs_TrapeziusShape',
+    'P3DTL_body_bs_NeckTrapeziusDown', 'body_bs_NailsLengthSquare', 'P3Design_body_bs_Nails_Oval', 'LKKatharina_body_bs_nails', '200_head_bs_ForeHeadWidth'
+]
 
 DIGIBODY_COEF_COLUMNS = [
     'Shoulder_Width', 'Arm_Size', '4_Belly_Move_InOut', 'PBMGlutesSize', 'Hip_Size_2', 'PBMThighsSize', 'PBMShinsSize', 'PBMBreastsGone', 'PBMBreastsSize','CTRLBreastsNatural',

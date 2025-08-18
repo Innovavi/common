@@ -161,6 +161,24 @@ def generate_landmark_names(from_lm: int = 0, to_lm: int = 68, generate_conf: bo
         yield landmark_names
 
 
+def generate_3D_landmark_names(from_lm: int = 0, to_lm: int = 68, generate_conf: bool = False) -> Tuple[str, str, str]:
+    """
+    Generator for landmark names. Formats like this: "lm_x{:02d}", "lm_y{:02d}"
+    :param basic_landmarks:
+    :param from_lm: Starting landmark index.
+    :param to_lm: Ending landmark index.
+    """
+    for i in range(from_lm, to_lm):
+        lm_x = "lm_{:02d}_x".format(i)
+        lm_y = "lm_{:02d}_y".format(i)
+        lm_z = "lm_{:02d}_z".format(i)
+        lm_score = "lm_{:02d}_score".format(i)
+
+        landmark_names = (lm_x, lm_y, lm_z, lm_score) if generate_conf else (lm_x, lm_y, lm_z)
+
+        yield landmark_names
+
+
 def get_landmark_count(df: pd.DataFrame):
     landmark_count = 0
     df_columns = df.columns.tolist()
