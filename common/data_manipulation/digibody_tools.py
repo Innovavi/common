@@ -1,5 +1,6 @@
 from typing import Union
 
+import numpy as np
 import pandas as pd
 
 from common.data_manipulation.pandas_tools import get_bbox_from_pandas, get_landmarks_from_pandas
@@ -101,3 +102,30 @@ def parse_digibody_pandas_row(pandas_row: Union[pd.Series, pd.DataFrame]):
     full_landmarks = get_landmarks_from_pandas(pandas_row['landmarks'], to_lm=5873)
 
     return image_id, body_id, cloth_id, hair_id, texture_map_id, set_name, image_name, camera_type, bbox, measures, bones_measures, coefs, full_landmarks
+
+
+def parse_G9_digibody_pandas_row(pandas_row: Union[pd.Series, pd.DataFrame]):
+    metadata = pandas_row['metadata']
+
+    image_id = metadata.get('image_id', -1)
+    body_id = metadata.get('body_id', -1)
+    cloth_id = metadata.get('cloth_id', -1)
+    clothTightness = metadata.get('clothTightness', -1)
+    hair_id = metadata.get('hair_id', -1)
+    skinMapID = metadata.get('skinMapID', -1)
+    set_name = metadata.get('set', '')
+    image_name = metadata.get('image_name', '')
+    view_name = metadata.get('view_name', '')
+    is_male = metadata.get('is_male', '')
+
+    measures = pandas_row['measures'].values
+    bones_measures = pandas_row['bone_measures'].values
+
+    # dome_rotation = pandas_row['dome_rotation'].values
+    bbox = get_bbox_from_pandas(pandas_row['bbox'])
+    coefs = pandas_row['coefs'].values
+
+    # full_landmarks = get_landmarks_from_pandas(pandas_row['landmarks'], to_lm=11917)
+    full_landmarks = pandas_row['2D_landmarks'].values.reshape(-1, 2).astype(np.float32)
+
+    return image_id, body_id, cloth_id, clothTightness, hair_id, skinMapID, set_name, image_name, view_name, bbox, measures, bones_measures, coefs, full_landmarks
