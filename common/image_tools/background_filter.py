@@ -55,7 +55,7 @@ def fill_image_background_with_another_image(image: np.ndarray, background_image
         random_box = get_random_bbox_in_image(background_image.shape, image.shape, False)
         background_image = crop_box(background_image, random_box)
 
-    background_image = resize_image(background_image, image.shape, resizing_type=ResizingType.FIXED)
+    background_image = resize_image(background_image, image.shape[:2], resizing_type=ResizingType.FIXED)
 
     image_with_background = np.clip(bool_mask[:, :, np.newaxis] * background_image +
                                     ~bool_mask[:, :, np.newaxis] * image, 0, 255).astype(np.uint8)
