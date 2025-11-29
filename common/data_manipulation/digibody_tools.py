@@ -119,7 +119,7 @@ def parse_G9_digibody_pandas_row(pandas_row: Union[pd.Series, pd.DataFrame]):
     is_male = metadata.get('is_male', '')
 
     measures = pandas_row['measures'].values
-    bones_measures = pandas_row['bone_measures'].values
+    bone_measures = pandas_row['bone_measures'].values
 
     # dome_rotation = pandas_row['dome_rotation'].values
     bbox = get_bbox_from_pandas(pandas_row['bbox'])
@@ -128,4 +128,4 @@ def parse_G9_digibody_pandas_row(pandas_row: Union[pd.Series, pd.DataFrame]):
     # full_landmarks = get_landmarks_from_pandas(pandas_row['landmarks'], to_lm=11917)
     full_landmarks = pandas_row['2D_landmarks'].values.reshape(-1, 2).astype(np.float32)
 
-    return image_id, body_id, cloth_id, clothTightness, hair_id, skinMapID, set_name, image_name, view_name, bbox, measures, bones_measures, coefs, full_landmarks
+    return image_id, body_id, cloth_id, clothTightness, hair_id, skinMapID, set_name, image_name, view_name, bbox, measures, bone_measures, coefs, full_landmarks
